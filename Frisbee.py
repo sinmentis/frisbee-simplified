@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-import copy
-import json
 import logging
 import os
 import random
@@ -10,7 +8,6 @@ from typing import Dict
 from typing import List
 import namesgenerator
 from Frisbee.utils import gen_logger
-from Frisbee.utils import str_datetime
 from Frisbee.utils import now_time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
