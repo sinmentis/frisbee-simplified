@@ -11,7 +11,6 @@ from Frisbee.utils import gen_logger
 from Frisbee.utils import now_time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
-
 os.environ['OBJC_DISABLE_INITIALIZE_FORK_SAFETY'] = 'YES'
 
 
@@ -53,13 +52,12 @@ def collect(job):
 
 
 class Frisbee:
-
     """Class to interact with the core code."""
 
     NAME: ClassVar[str] = "Frisbee"
 
     def __init__(self, project: str = namesgenerator.get_random_name(),
-                 log_level: int = logging.INFO, save: bool = False):
+                 log_level: int = logging.INFO, save: bool = False, debug_only: bool = False):
         """Creation. The moons and the planets are there."""
         self.project: str = project
         self.project += "_%d" % (random.randint(100000, 999999))
@@ -72,6 +70,8 @@ class Frisbee:
 
         self.results: List = list()
         self.saved: List = list()
+
+        self.debug_only: bool = debug_only
 
     def _reset(self) -> None:
         """Reset some of the state in the class for multi-searches."""
@@ -99,6 +99,26 @@ class Frisbee:
             raise Exception("Jobs must be of type list.")
         self._log.info("Project: %s" % self.project)
         self._log.info("Processing jobs: %d", len(jobs))
+
+        # Pretend search is done
+        if self.debug_only:
+            self.results = [{
+                "engine": "bing",
+                "modifier": "site:github.com",
+                "domain": "blockade.io",
+                "limit": 50,
+                "results": {
+                    "start_time": "2018-12-13 16:54:15",
+                    "end_time": "2018-12-13 16:54:19",
+                    "emails": [
+                        "info@blockade.io"
+                    ],
+                    "duration": "4",
+                    "processed": 44
+                },
+                "project": "zealous_kirch"
+            }]
+            return
 
         if not executor:
             #  Reuse the same executor pool when processing greedy jobs
